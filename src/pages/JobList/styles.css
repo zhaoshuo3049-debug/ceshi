@@ -1,0 +1,549 @@
+.job-list-page {
+  padding: 12px 20px;
+  background: #f5f7fa;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* 搜索区域 */
+.search-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.search-row:last-child {
+  margin-bottom: 0;
+}
+
+.search-input-group {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 400px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.search-input-group:focus-within {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+}
+
+.search-type-select {
+  border: none !important;
+  background: #f5f7fa;
+  border-radius: 0 !important;
+  width: 120px;
+  height: 100%;
+}
+
+.search-type-select .ant-select-selector {
+  border: none !important;
+  background: #f5f7fa !important;
+  height: 100% !important;
+}
+
+.search-main-input {
+  border: none !important;
+  flex: 1;
+  height: 100%;
+}
+
+.search-main-input:focus {
+  box-shadow: none !important;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label {
+  color: #666;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.filter-select {
+  min-width: 120px;
+}
+
+/* 是否为管理岗清除按钮默认展示 */
+.manager-select.ant-select-allow-clear .ant-select-clear {
+  opacity: 1;
+}
+
+/* 状态筛选 */
+.status-filter-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #e8e8e8;
+  gap: 12px;
+}
+
+.status-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid #e8e8e8;
+  background: #fafafa;
+}
+
+.status-tag.active {
+  background: #e6f4ff;
+  border-color: #1677ff;
+  color: #1677ff;
+}
+
+.status-tag .remove-icon {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.status-tag .remove-icon:hover {
+  opacity: 1;
+}
+
+.action-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn-small {
+  font-size: 13px;
+  height: 28px;
+  padding: 0 12px;
+}
+
+/* 统计栏 */
+.stats-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.stats-left {
+  display: flex;
+  gap: 16px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #ffffff;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #666;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.stat-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.stat-dot.blue {
+  background: #1677ff;
+}
+
+.stat-dot.green {
+  background: #52c41a;
+}
+
+.stat-dot.orange {
+  background: #fa8c16;
+}
+
+.stat-count {
+  color: #333;
+  font-weight: 600;
+}
+
+.stats-right {
+  display: flex;
+  gap: 10px;
+}
+
+.export-btn {
+  border-radius: 8px;
+}
+
+.add-btn {
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1677ff 0%, #0958d9 100%);
+  border: none;
+  box-shadow: 0 2px 6px rgba(22, 119, 255, 0.3);
+}
+
+.add-btn:hover {
+  background: linear-gradient(135deg, #4096ff 0%, #1677ff 100%) !important;
+  box-shadow: 0 4px 12px rgba(22, 119, 255, 0.4) !important;
+}
+
+/* 表格区域 */
+.table-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-scroll-area {
+  flex: 1;
+  overflow: hidden;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.table-section .ant-table {
+  font-size: 13px;
+}
+
+.table-section .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+  color: #333;
+  padding: 12px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-section .ant-table-tbody > tr > td {
+  padding: 12px 8px;
+  color: #555;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.table-section .ant-table-tbody > tr:hover > td {
+  background: #f0f7ff;
+}
+
+.table-section .ant-table-thead > tr > th:first-child,
+.table-section .ant-table-tbody > tr > td:first-child {
+  padding-left: 40px;
+}
+
+/* 职位名称列 */
+.job-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.job-name-text {
+  color: #333;
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.new-tag {
+  font-size: 11px;
+  padding: 0 6px;
+  height: 18px;
+  line-height: 18px;
+  background: #e6f7ff;
+  color: #1677ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+}
+
+/* 公司级别标签 */
+.company-level-tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.company-level-tag.large {
+  background: #e6f4ff;
+  color: #1677ff;
+  border: 1px solid #91caff;
+}
+
+.company-level-tag.medium {
+  background: #e6fffb;
+  color: #13c2c2;
+  border: 1px solid #87e8de;
+}
+
+.company-level-tag.small {
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #d9d9d9;
+}
+
+/* 优先级标签 */
+.priority-tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.priority-tag.high {
+  background: #fff1f0;
+  color: #cf1322;
+  border: 1px solid #ffa39e;
+}
+
+.priority-tag.medium {
+  background: #fff7e6;
+  color: #d46b08;
+  border: 1px solid #ffd591;
+}
+
+.priority-tag.low {
+  background: #f6ffed;
+  color: #389e0d;
+  border: 1px solid #b7eb8f;
+}
+
+/* 展开行 */
+.expanded-row-content {
+  padding: 16px 24px;
+  background: #fafafa;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.expanded-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.expanded-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.expanded-info-item {
+  display: flex;
+  gap: 8px;
+}
+
+.expanded-info-label {
+  color: #888;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.expanded-info-value {
+  color: #333;
+  font-size: 13px;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.bottom-left {
+  display: flex;
+  gap: 10px;
+}
+
+.bottom-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination-info {
+  color: #888;
+  font-size: 13px;
+}
+
+/* 自定义分页 */
+.custom-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn {
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #555;
+  transition: all 0.3s;
+}
+
+.page-btn:hover {
+  border-color: #1677ff;
+  color: #1677ff;
+}
+
+.page-btn.active {
+  background: #1677ff;
+  color: #fff;
+  border-color: #1677ff;
+}
+
+.page-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-ellipsis {
+  color: #888;
+  padding: 0 4px;
+}
+
+/* 全选复选框样式 */
+.custom-checkbox .ant-checkbox-inner {
+  border-radius: 4px;
+}
+
+/* 强制显示表格横向滚动条 */
+.table-scroll-area .ant-table-wrapper .ant-table-body,
+.table-scroll-area .ant-table-wrapper .ant-table-content,
+.table-scroll-area .ant-table-wrapper .ant-table-container {
+  scrollbar-width: auto !important;
+  -ms-overflow-style: scrollbar !important;
+}
+
+.table-scroll-area .ant-table-wrapper .ant-table-body::-webkit-scrollbar,
+.table-scroll-area .ant-table-wrapper .ant-table-content::-webkit-scrollbar,
+.table-scroll-area .ant-table-wrapper .ant-table-container::-webkit-scrollbar {
+  height: 10px;
+  display: block !important;
+}
+
+.table-scroll-area .ant-table-wrapper .ant-table-body::-webkit-scrollbar-track,
+.table-scroll-area .ant-table-wrapper .ant-table-content::-webkit-scrollbar-track,
+.table-scroll-area .ant-table-wrapper .ant-table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+.table-scroll-area .ant-table-wrapper .ant-table-body::-webkit-scrollbar-thumb,
+.table-scroll-area .ant-table-wrapper .ant-table-content::-webkit-scrollbar-thumb,
+.table-scroll-area .ant-table-wrapper .ant-table-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 5px;
+}
+
+.table-scroll-area .ant-table-wrapper .ant-table-body::-webkit-scrollbar-thumb:hover,
+.table-scroll-area .ant-table-wrapper .ant-table-content::-webkit-scrollbar-thumb:hover,
+.table-scroll-area .ant-table-wrapper .ant-table-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 固定列阴影 */
+.ant-table-cell-fix-left {
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.04);
+}
+
+.ant-table-cell-fix-right {
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.04);
+}
+
+/* 新增职位抽屉表单 */
+.job-form-drawer .ant-drawer-body {
+  padding: 20px 24px;
+}
+
+/* 确保关闭按钮显示在右上角，点击高亮背景与图标严格居中 */
+.job-form-drawer .ant-drawer-close {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.job-form-drawer .ant-drawer-close .anticon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.job-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* 是否为管理岗 placeholder 字号缩小 2px 并垂直居中 */
+.manager-form-item [class*="ant-select-selection-placeholder"] {
+  font-size: 12px !important;
+  line-height: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
