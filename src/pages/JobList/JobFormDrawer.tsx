@@ -80,12 +80,9 @@ const JobFormDrawer: React.FC<JobFormDrawerProps> = ({
           jobName: initialData.jobName,
           jobStatus: initialData.jobStatus,
           customerName: initialData.customerName,
-          companyLevel: initialData.companyLevel,
-          contactPerson: initialData.contactPerson,
           province,
           city,
           isManager: initialData.isManager,
-          priority: initialData.priority,
           deliveryManager: initialData.deliveryManager,
           deliveryConsultant: initialData.deliveryConsultant,
           jobDescription: initialData.jobDescription || '',
@@ -134,14 +131,11 @@ const JobFormDrawer: React.FC<JobFormDrawerProps> = ({
       jobName: values.jobName,
       jobStatus: values.jobStatus,
       customerName: values.customerName,
-      companyLevel: values.companyLevel,
-      contactPerson: values.contactPerson,
       workLocation: `${values.province}-${values.city}`,
       isManager: values.isManager,
-      priority: values.priority,
       deliveryManager: values.deliveryManager || '',
       deliveryConsultant: values.deliveryConsultant || '',
-      createTime: initialData ? initialData.createTime : dayjs().format('YYYY.MM.DD'),
+      createTime: initialData ? initialData.createTime : dayjs().format('YYYY.MM.DD HH:mm'),
       jobDescription: values.jobDescription || '',
     };
     if (!initialData) {
@@ -214,30 +208,21 @@ const JobFormDrawer: React.FC<JobFormDrawerProps> = ({
           </Col>
           <Col span={12}>
             <Form.Item
-              label="公司级别"
-              name="companyLevel"
-              rules={[{ required: true, message: '请选择公司级别' }]}
+              label="是否为管理岗"
+              name="isManager"
+              className="manager-form-item"
+              rules={[{ required: true, message: '请选择是否为管理岗' }]}
             >
-              <Select placeholder="请选择">
-                <Option value="大厂">大厂</Option>
-                <Option value="中厂">中厂</Option>
-                <Option value="小厂">小厂</Option>
+              <Select placeholder="请选择" popupClassName="manager-select-popup">
+                <Option value="是">是</Option>
+                <Option value="否">否</Option>
               </Select>
             </Form.Item>
           </Col>
         </Row>
 
         <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="联系人"
-              name="contactPerson"
-              rules={[{ required: true, message: '请输入联系人' }]}
-            >
-              <Input placeholder="请输入" maxLength={20} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item label="工作地点" required>
               <Row gutter={8}>
                 <Col span={12}>
@@ -277,35 +262,6 @@ const JobFormDrawer: React.FC<JobFormDrawerProps> = ({
                   </Form.Item>
                 </Col>
               </Row>
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="是否为管理岗"
-              name="isManager"
-              className="manager-form-item"
-              rules={[{ required: true, message: '请选择是否为管理岗' }]}
-            >
-              <Select placeholder="请选择" popupClassName="manager-select-popup">
-                <Option value="是">是</Option>
-                <Option value="否">否</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="优先级"
-              name="priority"
-              rules={[{ required: true, message: '请选择优先级' }]}
-            >
-              <Select placeholder="请选择">
-                <Option value="一级">一级</Option>
-                <Option value="二级">二级</Option>
-                <Option value="三级">三级</Option>
-              </Select>
             </Form.Item>
           </Col>
         </Row>

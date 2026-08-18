@@ -24,7 +24,6 @@ import JobFormDrawer from './JobFormDrawer';
 const { Option } = Select;
 
 const JobList: React.FC = () => {
-  const [searchType, setSearchType] = useState('全文');
   const [searchValue, setSearchValue] = useState('');
   const [searchInputValue, setSearchInputValue] = useState('');
   const [managerFilter, setManagerFilter] = useState<string | undefined>(undefined);
@@ -32,15 +31,19 @@ const JobList: React.FC = () => {
   const [deliveryManagerInput, setDeliveryManagerInput] = useState('');
   const [deliveryConsultant, setDeliveryConsultant] = useState('');
   const [deliveryConsultantInput, setDeliveryConsultantInput] = useState('');
-  const [priorityFilter, setPriorityFilter] = useState<string | undefined>(undefined);
-  const [statusFilter, setStatusFilter] = useState<string | undefined>('进行中');
+  const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(15);
   const [jobList, setJobList] = useState<JobItem[]>(mockJobList);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [editingRecord, setEditingRecord] = useState<JobItem | undefined>(undefined);
+  const [pageInputValue, setPageInputValue] = useState('1');
   const tableScrollAreaRef = useRef<HTMLDivElement>(null);
   const [scrollY, setScrollY] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    setPageInputValue(String(currentPage));
+  }, [currentPage]);
 
   useEffect(() => {
     const calcHeight = () => {
@@ -61,52 +64,15 @@ const JobList: React.FC = () => {
     };
   }, []);
 
-  const searchTypeOptions = ['全文', '职位名称', '客户名称', '联系人'];
 
-  const getCompanyLevelClass = (level: string) => {
-    switch (level) {
-      case '大厂':
-        return 'large';
-      case '中厂':
-        return 'medium';
-      case '小厂':
-        return 'small';
-      default:
-        return 'small';
-    }
-  };
-
-  const getPriorityClass = (priority: string) => {
-    switch (priority) {
-      case '一级':
-        return 'high';
-      case '二级':
-        return 'medium';
-      case '三级':
-        return 'low';
-      default:
-        return 'low';
-    }
-  };
 
   const filteredData = useMemo(() => {
     let data = [...jobList];
 
     if (searchValue) {
-      data = data.filter((item) => {
-        const value = searchValue.toLowerCase();
-        if (searchType === '全文') {
-          return (
-            item.jobName.toLowerCase().includes(value) ||
-            item.customerName.toLowerCase().includes(value) ||
-            item.contactPerson.toLowerCase().includes(value)
-          );
-        }
-        if (searchType === '职位名称') return item.jobName.toLowerCase().includes(value);
-        if (searchType === '客户名称') return item.customerName.toLowerCase().includes(value);
-        if (searchType === '联系人') return item.contactPerson.toLowerCase().includes(value);
-        return true;
-      });
+      data = data.filter((item) =>
+        item.jobName.toLowerCase().includes(searchValue.toLowerCase())
+      );
     }
 
     if (deliveryManager) {
@@ -129,12 +95,8 @@ const JobList: React.FC = () => {
       });
     }
 
-    if (priorityFilter) {
-      data = data.filter((item) => item.priority === priorityFilter);
-    }
-
     return data;
-  }, [jobList, searchValue, searchType, deliveryManager, deliveryConsultant, statusFilter, managerFilter, priorityFilter]);
+  }, [jobList, searchValue, deliveryManager, deliveryConsultant, statusFilter, managerFilter]);
 
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
@@ -146,7 +108,7 @@ const JobList: React.FC = () => {
   const activeFilters = useMemo(() => {
     const filters: { key: string; label: string; onRemove: () => void }[] = [];
     if (searchValue) {
-      filters.push({ key: 'search', label: `${searchType}: ${searchValue}`, onRemove: () => setSearchValue('') });
+      filters.push({ key: 'search', label: `职位名称: ${searchValue}`, onRemove: () => setSearchValue('') });
     }
     if (managerFilter) {
       filters.push({ key: 'managerFilter', label: `是否为管理岗: ${managerFilter}`, onRemove: () => setManagerFilter(undefined) });
@@ -157,24 +119,20 @@ const JobList: React.FC = () => {
     if (deliveryConsultant) {
       filters.push({ key: 'deliveryConsultant', label: `交付顾问: ${deliveryConsultant}`, onRemove: () => setDeliveryConsultant('') });
     }
-    if (priorityFilter) {
-      filters.push({ key: 'priorityFilter', label: `优先级: ${priorityFilter}`, onRemove: () => setPriorityFilter(undefined) });
-    }
     if (statusFilter) {
       filters.push({ key: 'statusFilter', label: `职位状态: ${statusFilter}`, onRemove: () => setStatusFilter(undefined) });
     }
     return filters;
-  }, [searchValue, managerFilter, deliveryManager, deliveryConsultant, priorityFilter, statusFilter]);
+  }, [searchValue, managerFilter, deliveryManager, deliveryConsultant, statusFilter]);
 
   const columns: ColumnsType<JobItem> = [
     {
       title: '职位名称',
       key: 'jobName',
-      width: 220,
+      width: 120,
       render: (_, record) => (
         <div className="job-name-cell">
           <span className="job-name-text">{record.jobName}</span>
-          {record.isNew && <span className="new-tag">新</span>}
         </div>
       ),
     },
@@ -182,7 +140,7 @@ const JobList: React.FC = () => {
       title: '职位状态',
       dataIndex: 'jobStatus',
       key: 'jobStatus',
-      width: 80,
+      width: 65,
       render: (status: string) => {
         const colorMap: Record<string, string> = {
           '进行中': 'success',
@@ -200,59 +158,34 @@ const JobList: React.FC = () => {
       title: '客户名称',
       dataIndex: 'customerName',
       key: 'customerName',
-      width: 160,
-      ellipsis: true,
-    },
-    {
-      title: '公司级别',
-      dataIndex: 'companyLevel',
-      key: 'companyLevel',
-      width: 80,
-      render: (level: string) => (
-        <span className={`company-level-tag ${getCompanyLevelClass(level)}`}>{level}</span>
-      ),
-    },
-    {
-      title: '联系人',
-      dataIndex: 'contactPerson',
-      key: 'contactPerson',
-      width: 100,
+      width: 105,
       ellipsis: true,
     },
     {
       title: '工作地点',
       dataIndex: 'workLocation',
       key: 'workLocation',
-      width: 120,
+      width: 100,
       ellipsis: true,
     },
     {
       title: '是否为管理岗',
       dataIndex: 'isManager',
       key: 'isManager',
-      width: 100,
-    },
-    {
-      title: '优先级',
-      dataIndex: 'priority',
-      key: 'priority',
-      width: 70,
-      render: (priority: string) => (
-        <span className={`priority-tag ${getPriorityClass(priority)}`}>{priority}</span>
-      ),
+      width: 95,
     },
     {
       title: '交付经理',
       dataIndex: 'deliveryManager',
       key: 'deliveryManager',
-      width: 100,
+      width: 90,
       ellipsis: true,
     },
     {
       title: '交付顾问',
       dataIndex: 'deliveryConsultant',
       key: 'deliveryConsultant',
-      width: 100,
+      width: 90,
       ellipsis: true,
     },
 
@@ -260,12 +193,12 @@ const JobList: React.FC = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
-      width: 100,
+      width: 110,
     },
     {
       title: '操作',
       key: 'action',
-      width: 60,
+      width: 55,
       render: (_, record) => (
         <Tooltip title="编辑">
           <EditOutlined
@@ -379,37 +312,27 @@ const JobList: React.FC = () => {
       {/* 搜索区域 */}
       <div className="search-section">
         <div className="search-row">
-          <div className="search-input-group">
-            <Select
-              value={searchType}
-              onChange={setSearchType}
-              className="search-type-select"
-            >
-              {searchTypeOptions.map((opt) => (
-                <Option key={opt} value={opt}>
-                  {opt}
-                </Option>
-              ))}
-            </Select>
+          <div className="filter-item">
             <Input
-              placeholder="输入并回车"
-              className="search-main-input"
+              placeholder="请输入职位名称并回车"
               value={searchInputValue}
               onChange={(e) => setSearchInputValue(e.target.value)}
               onPressEnter={() => {
                 setSearchValue(searchInputValue);
               }}
               suffix={<SearchOutlined style={{ color: '#bbb' }} />}
+              style={{ width: 240 }}
             />
           </div>
 
           <div className="filter-item">
             <Input
-              placeholder="输入交付经理并回车"
+              placeholder="请输入交付经理"
               value={deliveryManagerInput}
               onChange={(e) => setDeliveryManagerInput(e.target.value)}
               onPressEnter={() => setDeliveryManager(deliveryManagerInput)}
-              style={{ width: 180 }}
+              suffix={<SearchOutlined style={{ color: '#bbb' }} />}
+              style={{ width: 240 }}
             />
           </div>
           <div className="filter-item">
@@ -418,12 +341,10 @@ const JobList: React.FC = () => {
               value={deliveryConsultantInput}
               onChange={(e) => setDeliveryConsultantInput(e.target.value)}
               onPressEnter={() => setDeliveryConsultant(deliveryConsultantInput)}
-              style={{ width: 180 }}
+              suffix={<SearchOutlined style={{ color: '#bbb' }} />}
+              style={{ width: 240 }}
             />
           </div>
-        </div>
-
-        <div className="search-row">
           <div className="filter-item">
             <span className="filter-label">职位状态</span>
             <Select
@@ -452,22 +373,6 @@ const JobList: React.FC = () => {
             >
               <Option value="是">是</Option>
               <Option value="否">否</Option>
-            </Select>
-          </div>
-
-          <div className="filter-item">
-            <span className="filter-label">优先级</span>
-            <Select
-              placeholder="请选择"
-              allowClear
-              className="filter-select"
-              value={priorityFilter}
-              onChange={setPriorityFilter}
-              style={{ width: 160 }}
-            >
-              <Option value="一级">一级</Option>
-              <Option value="二级">二级</Option>
-              <Option value="三级">三级</Option>
             </Select>
           </div>
         </div>
@@ -503,7 +408,6 @@ const JobList: React.FC = () => {
                   setDeliveryConsultant('');
                   setDeliveryConsultantInput('');
                   setManagerFilter(undefined);
-                  setPriorityFilter(undefined);
                   setStatusFilter(undefined);
                 }}
               >
@@ -534,27 +438,33 @@ const JobList: React.FC = () => {
             dataSource={paginatedData}
             rowKey="id"
             pagination={false}
-            scroll={{ x: 2200, y: scrollY }}
+            scroll={{ x: 1600, y: scrollY }}
+            locale={{ emptyText: '暂无数据' }}
           />
         </div>
 
         {/* 底部操作栏 */}
         <div className="bottom-bar">
-          <span className="pagination-info">
-            耗时：0.746S
-          </span>
           <div className="bottom-right">
             <span className="pagination-info">
               共{filteredData.length}条
             </span>
             <div className="custom-pagination">{renderPageNumbers()}</div>
             <span style={{ fontSize: 13, color: '#888' }}>
-              前往 <Input size="small" style={{ width: 40, textAlign: 'center' }} value={currentPage} onChange={(e) => {
-                const page = parseInt(e.target.value);
-                if (page >= 1 && page <= totalPages) {
-                  setCurrentPage(page);
-                }
-              }} /> 页
+              前往 <Input
+                size="small"
+                style={{ width: 40, textAlign: 'center' }}
+                value={pageInputValue}
+                onChange={(e) => setPageInputValue(e.target.value)}
+                onBlur={() => {
+                  const page = parseInt(pageInputValue);
+                  if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                    setCurrentPage(page);
+                  } else {
+                    setPageInputValue(String(currentPage));
+                  }
+                }}
+              /> 页
             </span>
           </div>
         </div>
