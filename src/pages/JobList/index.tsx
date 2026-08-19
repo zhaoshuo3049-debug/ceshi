@@ -322,6 +322,7 @@ const JobList: React.FC = () => {
               }}
               suffix={<SearchOutlined style={{ color: '#bbb' }} />}
               style={{ width: 240 }}
+              maxLength={20}
             />
           </div>
 
@@ -333,6 +334,7 @@ const JobList: React.FC = () => {
               onPressEnter={() => setDeliveryManager(deliveryManagerInput)}
               suffix={<SearchOutlined style={{ color: '#bbb' }} />}
               style={{ width: 240 }}
+              maxLength={20}
             />
           </div>
           <div className="filter-item">
@@ -343,6 +345,7 @@ const JobList: React.FC = () => {
               onPressEnter={() => setDeliveryConsultant(deliveryConsultantInput)}
               suffix={<SearchOutlined style={{ color: '#bbb' }} />}
               style={{ width: 240 }}
+              maxLength={20}
             />
           </div>
           <div className="filter-item">
